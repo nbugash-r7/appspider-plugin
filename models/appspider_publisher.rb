@@ -1,5 +1,5 @@
-# require 'publisher'
-require 'appspider/api_extended'
+# require_relative '../lib/publisher'
+require_relative 'api_extended'
 # A single build step that run after the build is complete
 class AppspiderPublisher < Jenkins::Tasks::Publisher
 
@@ -58,8 +58,9 @@ class AppspiderPublisher < Jenkins::Tasks::Publisher
           launcher: launcher,
           listener: listener
       }
-      api_ext = Appspider::ApiExtended.new options
-      api_ext.run_scan_config options
+
+      # api_ext = Appspider::ApiExtended.new options
+      # api_ext.run_scan_config options
     else
       listener.info "AppSpider was not enabled."
     end

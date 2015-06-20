@@ -20,7 +20,7 @@ Jenkins::Plugin::Specification.new do |plugin|
   plugin.uses_repository :github => "appspider-plugin"
 
   # This is a required dependency for every ruby plugin.
-  plugin.depends_on 'ruby-runtime', '0.10'
+  plugin.depends_on 'ruby-runtime', '0.12'
 
   # This is a sample dependency for a Jenkins plugin, 'git'.
   #plugin.depends_on 'git', '1.1.11'

@@ -10,7 +10,7 @@ module Appspider
       private
       def message
         msg = "#{build.full_display_name}-#{status}"
-        instance = Java::jenkins::model::Jenkiins.instance
+        instance = Java::jenkins::model::Jenkins.instance
         if instance and instance.root_url
           msg << "(a<href=\"#{instance.root_url.chomp('/')}/#{build.url}\">Open</a>"
         end
