@@ -4,7 +4,7 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="jdk" jdkName="RVM: jruby-1.7.20" jdkType="JRUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="bundler (v1.10.3, RVM: jruby-1.7.20) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="bundler (v1.10.4, RVM: jruby-1.7.20) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="domain_name (v0.5.24, RVM: jruby-1.7.20) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="http-cookie (v1.0.2, RVM: jruby-1.7.20) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="jenkins-plugin-runtime (v0.2.3, RVM: jruby-1.7.20) [gem]" level="application" />
