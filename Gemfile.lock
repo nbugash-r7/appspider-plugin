@@ -1,0 +1,31 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    domain_name (0.5.24)
+      unf (>= 0.0.5, < 1.0.0)
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
+    jenkins-plugin-runtime (0.2.3)
+      json
+      slop (~> 3.0.2)
+    jruby-openssl (0.9.7-java)
+    json (1.8.3-java)
+    mime-types (2.6.1)
+    netrc (0.10.3)
+    rest-client (1.8.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
+    slop (3.0.4)
+    unf (0.1.4-java)
+
+PLATFORMS
+  java
+
+DEPENDENCIES
+  jenkins-plugin-runtime (~> 0.2.3)
+  jruby-openssl
+  rest-client
+
+BUNDLED WITH
+   1.10.3

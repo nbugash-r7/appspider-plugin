@@ -1,0 +1,30 @@
+<%
+f = taglib("/lib/form")
+f.block do
+  f.entry(:title => 'AppSpider URL',
+          :field => 'appspider_url',
+          :description => 'Enter the AppSpider url (E.g http://ontesting.ntobjectives.com/ntoe36/rest/v1)') do
+    f.textbox
+  end
+  f.entry(:title => 'Username',
+          :field => 'username',
+          :description => 'Enter your username  (E.g wstclient)') do
+    f.textbox
+  end
+  f.entry(:title => 'Password',
+          :field => 'password',
+          :description => 'Enter your password') do
+    f.password
+  end
+  f.entry(:title => 'Scan config name',
+          :field => 'config_name',
+          :description => 'Enter the scan config name (E.g: wst3linksXSS_nb)') do
+    f.textbox
+  end
+  f.entry(:title => 'Start scan?',
+          :field => 'startscan',
+          :description => 'Start the AppSpider Scan after build') do
+    f.checkbox
+  end
+end
+%>
