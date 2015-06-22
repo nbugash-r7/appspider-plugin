@@ -22,6 +22,6 @@ build/
 /rdoc/
 
 ## Environment normalisation:
-./.idea
+.idea/
 /work/
 /pkg/
