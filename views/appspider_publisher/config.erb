@@ -3,7 +3,7 @@ f = taglib("/lib/form")
 f.block do
   f.entry(:title => 'AppSpider URL',
           :field => 'appspider_url',
-          :description => 'Enter the AppSpider url (E.g http://testntoent.com/ntoe36/rest/v1)') do
+          :description => 'Enter the AppSpider url (E.g http://appspiderside/rest/v1)') do
     f.textbox
   end
   f.entry(:title => 'Username',
@@ -18,7 +18,7 @@ f.block do
   end
   f.entry(:title => 'Scan config name',
           :field => 'config_name',
-          :description => 'Enter the scan config name (E.g: scan_name)') do
+          :description => 'Enter the scan config name (E.g: testsite)') do
     f.textbox
   end
   f.entry(:title => 'Start scan?',
