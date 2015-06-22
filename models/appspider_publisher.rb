@@ -55,9 +55,9 @@ class AppspiderPublisher < Jenkins::Tasks::Publisher
           password: @password,
           config_name: @config_name
       }
-      api_ext = Appspider::ApiExtended.new(build,listener,self)
-      # api_ext.run_scan_config options
-      # api_ext = Appspider::ApiExtended.new options
+      # api_ext = Appspider::ApiExtended.new(build,listener,self)
+      # api_ext = Appspider::ApiExtended.new(options)
+      Appspider::ApiExtended.run_scan_config options
     else
       listener.info "AppSpider was not enabled."
     end
