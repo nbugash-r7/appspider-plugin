@@ -16,3 +16,4 @@ $ jpi server
 
 * Jenkins CI
 * install the ruby-runtime plugin for Jenkins
+* JAVA_OPTS = "-Djava.awt.headless=true -Xmx1048m -XX:+UseConcMarkSweepGC"
