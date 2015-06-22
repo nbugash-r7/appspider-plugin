@@ -58,7 +58,7 @@ class AppspiderPublisher < Jenkins::Tasks::Publisher
           launcher: launcher,
           listener: listener
       }
-
+      api_ext = Appspider::ApiExtended.new(build,listener,self)
       # api_ext = Appspider::ApiExtended.new options
       # api_ext.run_scan_config options
     else

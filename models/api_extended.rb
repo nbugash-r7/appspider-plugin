@@ -3,16 +3,20 @@ module Appspider
     class ApiExtended
       attr_accessor :build ,
                     :launcher,
-                    :listener
+                    :listener,
+                    :publisher
 
-      def initialize(options = {})
-        @build = options[:build]
-        @launcher = options[:launcher]
-        @listener = options[:listener]
+      def initialize(build, listener, publisher)
+        # @build = options[:build]
+        # @launcher = options[:launcher]
+        # @listener = options[:listener]
+        @build = build
+        @listener = listener
+        @api_ext = publisher
       end
 
       def get_all_scans(options = {})
-        appspider_instance = Appspider::Api.new(options)
+        appspider_instance = Appspider::Api.new(options,self)
         all_configs ||= []
         appspider_instance.get_configs[:Configs].each do |config|
           all_configs << config[:Name]
@@ -21,7 +25,7 @@ module Appspider
       end
 
       def get_all_scan_status(options = {})
-        appspider_instance = Appspider::Api.new(options)
+        appspider_instance = Appspider::Api.new(options,self)
         all_scans = appspider_instance.get_scans
         scans = all_scans[:Scans]
         all_scans_status ||= {}
@@ -38,7 +42,7 @@ module Appspider
       def run_scan_config(options = {})
         raise StandardError, "Config name is not specified" if options[:config_name].to_s.empty?
         config_name = options[:config_name]
-        appspider_instance = Appspider::Api.new(options)
+        appspider_instance = Appspider::Api.new(options,self)
         appspider_instance.get_configs[:Configs].each do |config|
           if config[:Name].to_s.match config_name
             appspider_instance.run_scan config[:Id]
