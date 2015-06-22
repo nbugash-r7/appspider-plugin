@@ -2,7 +2,7 @@ require 'publisher'
 # A single build step that run after the build is complete
 class AppspiderPublisher < Jenkins::Tasks::Publisher
 
-  display_name "Appspider"
+  display_name "Start Appspider Scan"
 
   attr_accessor :appspider_url
   attr_accessor :username

@@ -12,6 +12,9 @@ GEM
     mime-types (1.25.1)
     rest-client (1.6.9)
       mime-types (~> 1.16)
+    rspec-core (3.3.1)
+      rspec-support (~> 3.3.0)
+    rspec-support (3.3.0)
     slop (3.0.4)
 
 PLATFORMS
@@ -22,6 +25,7 @@ DEPENDENCIES
   jenkins-plugin-runtime (~> 0.2.0)
   jruby-openssl (~> 0.7.7)
   rest-client (~> 1.6.7)
+  rspec-core
 
 BUNDLED WITH
    1.10.4
