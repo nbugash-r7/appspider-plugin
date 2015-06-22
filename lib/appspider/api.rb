@@ -1,14 +1,15 @@
 require 'net/http'
-require 'rest-client'
 require 'json'
-require 'openssl'
+require 'java'
+import 'org.apache.commons.httpclient.HttpClient'
+import 'org.apache.commons.httpclient.methods.PostMethod'
+import 'org.apache.commons.httpclient.methods.GetMethod'
 module Appspider
-
   class Api
 
-    attr_accessor :url
-    attr_accessor :auth_token
-
+    attr_accessor :url,
+                  :auth_token,
+                  :api_ext
 
     # Authentication Options
     AUTHENTICATION = '/Authentication/Login'
@@ -59,10 +60,8 @@ module Appspider
     GETSCANERRORS = '/Scan/GetScanErrors' # Implemented
 
 
-    def initialize(options = {})
-      @build = options[:build]
-      @launcher = options[:launcher]
-      @listener = options[:listener]
+    def initialize(options = {},api_ext)
+      @api_ext = api_ext
       raise StandardError, "Invalid AppSpider Url" if options[:url].to_s.empty?
       raise StandardError, "Invalid username" if options[:username].to_s.empty?
       raise StandardError, "Invalid password" if options[:password].to_s.empty?
@@ -229,40 +228,71 @@ module Appspider
 
 
     private
-    def post(api_call, params = {})
-      full_url = "#{@url}#{api_call}"
-      params[:content]
-      if @auth_token
-        response = RestClient::Request.execute(
-            method: :post,
-            url: full_url,
-            headers: {Authorization: "Basic #{@auth_token}"},
-            payload: params
-        )
-      else
-        # Not Authenticated
-        response = RestClient::Request.execute(
-            method: :post,
-            url: full_url,
-            payload: params
-        )
+    # Using rest-client gem
+    # def post(api_call, params = {})
+    #   full_url = "#{@url}#{api_call}"
+    #   params[:content]
+    #   if @auth_token
+    #     response = RestClient::Request.execute(
+    #         method: :post,
+    #         url: full_url,
+    #         headers: {Authorization: "Basic #{@auth_token}"},
+    #         payload: params
+    #     )
+    #   else
+    #     # Not Authenticated
+    #     response = RestClient::Request.execute(
+    #         method: :post,
+    #         url: full_url,
+    #         payload: params
+    #     )
+    #   end
+    #   JSON.parse(response, symbolize_names: true)
+    # end
+
+    def post(api_call,params = {})
+      api_call = "#{@url}#{api_call}"
+      post = PostMethod.new(api_call)
+      post.addRequestHeaders("Authorization","Basic #{@auth_token}") if @auth_token
+      params.each do |k,v|
+        post.add_parameters(k.to_s,v.to_s)
       end
-      JSON.parse(response, symbolize_names: true)
+      response = send(post)
+      post.release_connection
+      JSON.parse response
     end
 
-    def get(api_call, params = {})
-      JSON.parse(
-          RestClient::Request.execute(
-              method: :get,
-              url: "#{@url}#{api_call}",
-              headers: {
-                  Authorization: "Basic #{@auth_token}",
-                  params: params
-              },
-          ),
-          symbolize_names: true
-      )
+    # def get(api_call, params = {})
+    #   JSON.parse(
+    #       RestClient::Request.execute(
+    #           method: :get,
+    #           url: "#{@url}#{api_call}",
+    #           headers: {
+    #               Authorization: "Basic #{@auth_token}",
+    #               params: params
+    #           },
+    #       ),
+    #       symbolize_names: true
+    #   )
+    # end
+
+    def get(api_call,params = {})
+      api_call = "#{@url}#{api_call}"
+      get = GetMethod.new(api_call)
+      get.addRequestHeader("Authorization","Basic #{@auth_token}")
+      params.each do |k,v|
+        get.addRequestHeader(k.to_s,v.to_s)
+      end
+      response = send(get)
+      get.release_connection
+      JSON.parse response
     end
+
+    def send(method)
+      client = HttpClient.new
+      client.execute_method method
+    end
+
 
   end
 end

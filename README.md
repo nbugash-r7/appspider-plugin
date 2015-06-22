@@ -1,6 +1,7 @@
-# appspider plugin for Jenkins
+# Appspider plugin for Jenkins
 
-TODO: Purpose and awesomeness when finished.
+This plugin (when done) will be used by developers to add to their Jenkins CI to 
+trigger a AppSpider task after task (currently just a scan) to their latest build
 
 ## Development
 
@@ -11,10 +12,7 @@ $ bundle install
 $ jpi server
 ```
 
-## Contributing
+## Requirements
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+* Jenkins CI
+* install the ruby-runtime plugin for Jenkins
