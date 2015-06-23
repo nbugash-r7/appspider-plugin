@@ -2,30 +2,40 @@ GEM
   remote: http://rubygems.org/
   specs:
     bouncy-castle-java (1.5.0147)
+    diff-lcs (1.2.5)
     jenkins-plugin-runtime (0.2.3)
       json
       slop (~> 3.0.2)
     jruby-openssl (0.7.7)
       bouncy-castle-java (>= 1.5.0146.1)
-    json (1.8.3)
     json (1.8.3-java)
     mime-types (1.25.1)
     rest-client (1.6.9)
       mime-types (~> 1.16)
+    rspec (3.3.0)
+      rspec-core (~> 3.3.0)
+      rspec-expectations (~> 3.3.0)
+      rspec-mocks (~> 3.3.0)
     rspec-core (3.3.1)
+      rspec-support (~> 3.3.0)
+    rspec-expectations (3.3.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.3.0)
+    rspec-mocks (3.3.0)
+      diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
     slop (3.0.4)
 
 PLATFORMS
   java
-  ruby
 
 DEPENDENCIES
+  bouncy-castle-java
   jenkins-plugin-runtime (~> 0.2.0)
   jruby-openssl (~> 0.7.7)
   rest-client (~> 1.6.7)
-  rspec-core
+  rspec
 
 BUNDLED WITH
    1.10.4

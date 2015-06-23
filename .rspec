@@ -1,2 +1,8 @@
 --color
 --require spec_helper
+
+# Setting the formatting to documentation (verbose)
+--format documentation
+
+# Setting the default spec path
+--default-path spec

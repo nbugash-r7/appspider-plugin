@@ -4,15 +4,15 @@ module Appspider
     class Authentication < Appspider::Api::Base
       # Authentication Options
       AUTHENTICATION = '/Authentication/Login'
-      def self.login(nto_ent_rest_url,username,password)
-        raise StandardError, "Invalid Appspider url" if nto_ent_rest_url.to_s.empty?
-        raise StandardError, "Invalid Username" if username.to_s.empty?
-        raise StandardError, "Invalid Password" if password.to_s.empty?
-        params = {
-            username: username,
-            password: password
-        }
-        api_call = "#{nto_ent_rest_url}#{AUTHENTICATION}"
+      # @params = {
+      #   nto_ent_rest_url: nto_ent_rest_url,
+      #   name: name,
+      #   password: password
+      # }
+      def self.login(params = {})
+        raise StandardError, "Name parameter was not set" if params[:name].to_s.empty?
+        raise StandardError, "Password parameter was not set" if params[:password].to_s.empty?
+        api_call, params = get_api_call(AUTHENTICATION,params)
         post(api_call,params)
       end
     end
