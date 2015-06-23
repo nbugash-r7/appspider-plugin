@@ -16,6 +16,10 @@
 # users commonly want.
 #
 require 'rspec'
+require 'appspider/lib/authentication'
+require 'appspider/lib/engines'
+require 'appspider/lib/engine_group'
+require 'appspider/lib/scan_configuration'
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate

@@ -1,4 +1,4 @@
-require 'appspider/base'
+require 'appspider/lib/base'
 module Appspider
   module Api
     class Engines < Appspider::Api::Base

@@ -1,5 +1,4 @@
-require 'rspec'
-require 'appspider/lib/authentication'
+require 'spec_helper'
 
 RSpec.describe Appspider::Api::Authentication do
   before(:each) do
