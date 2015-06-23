@@ -5,3 +5,6 @@ gem 'rest-client', "~> 1.6.7"
 gem 'bouncy-castle-java'
 gem 'jpi'
 gem 'rspec'
+group :development do
+  gem 'ruby-debug-ide'
+end

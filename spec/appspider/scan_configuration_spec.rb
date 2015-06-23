@@ -3,8 +3,8 @@ RSpec.describe Appspider::Api::ScanConfiguration do
   before(:each) do
     @login = {
         nto_ent_rest_url: 'http://ontesting.ntobjectives.com/ntoe36/rest/v1',
-        name: 'wstclient',
-        password: 'wstclient'
+        name:             'wstclient',
+        password:         'wstclient'
     }
   end
   describe "Scan Configuration" do
@@ -21,12 +21,12 @@ RSpec.describe Appspider::Api::ScanConfiguration do
       end
       it 'should retrive all the scan configurations' do
         expect{
-            configs = Appspider::Api::ScanConfiguration.get_configs @params
-            configs
-            expect(configs[:Configs]).not_to be_empty
-        }
+          config = Appspider::Api::ScanConfiguration.get_configs(@params)
+          expect(config[:Configs]).not_to eq([])
+        }.not_to raise_error
       end
     end
+
     context "#get_scan_config" do
       before(:each) do
         @params = {
@@ -35,8 +35,8 @@ RSpec.describe Appspider::Api::ScanConfiguration do
         }
       end
       it 'should retrive all the scan configurations' do
-        @params[:id] = ''
-        expect(Appspider::Api::ScanConfiguration.get_scan_config @params).not_to be_empty
+        @params[:id] = 'testID'
+        expect(Appspider::Api::ScanConfiguration.get_scan_config @params).not_to eq([])
       end
     end
   end

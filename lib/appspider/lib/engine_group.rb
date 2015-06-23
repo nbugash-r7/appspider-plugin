@@ -6,9 +6,9 @@ module Appspider
       GETALLENGINEGROUPS       = '/EngineGroup/GetAllEngineGroups'       # Implemented
       GETENGINEGROUPSFORCLIENT = '/EngineGroup/GetEngineGroupsForClient' #
       SAVEENGINEGROUP          = '/EngineGroup/SaveEngineGroup'          # Implemented
-      DELETESCANENGINEGROUP    = '/EngineGroup/DeleteScanEngineGroup'
-      ADDENGINETOGROUP         = '/EngineGroup/AddEngineToGroup'
-      DELETEENGINEFROMGROUP    = '/EngineGroup/DeleteEngineFromGroup'
+      DELETESCANENGINEGROUP    = '/EngineGroup/DeleteScanEngineGroup'    #
+      ADDENGINETOGROUP         = '/EngineGroup/AddEngineToGroup'         #
+      DELETEENGINEFROMGROUP    = '/EngineGroup/DeleteEngineFromGroup'    #
 
       def self.get_all_engine_groups(params = {} )
         api_call, params = get_api_call(GETALLENGINEGROUPS,params)
