@@ -9,6 +9,7 @@ module Appspider
       #   name: name,
       #   password: password
       # }
+      # @return: Return the authorization token
       def self.login(rest_api_url,name,password)
         raise StandardError, "Name parameter was not set" if name.to_s.empty?
         raise StandardError, "Password parameter was not set" if password.to_s.empty?
@@ -17,7 +18,8 @@ module Appspider
             name: name,
             password: password
         }
-        post(api_call,params)
+        response = post(api_call,params)
+        response[:Token]
       end
     end
   end

@@ -2,7 +2,7 @@
 f = taglib("/lib/form")
 f.block do
   f.entry(:title => 'AppSpider Restful API URL',
-          :field => 'appspider_url',
+          :field => 'rest_api_url',
           :description => 'Enter the AppSpider rest api url (E.g http://appspiderside/rest/v1)') do
     f.textbox
   end
@@ -23,7 +23,14 @@ f.block do
   end
   f.entry(:title => 'Start scan?',
           :field => 'startscan',
+          :default => true,
           :description => 'Start the AppSpider Scan after Build Completion') do
+    f.checkbox
+  end
+  f.entry(:title => 'Monitor scan?',
+          :field => 'monitor',
+          :default => true,
+          :description => 'Note: When enabled this will block the entire build process until the scan is completed') do
     f.checkbox
   end
 end

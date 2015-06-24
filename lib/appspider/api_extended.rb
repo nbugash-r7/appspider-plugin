@@ -29,6 +29,18 @@ module Appspider
         all_scan_status
       end
 
+      def self.get_status_of_scan(options = {})
+        rest_api_url = options.delete(:rest_api_url)
+        auth_token = options.delete(:auth_token)
+        raise StandardError, "'scanId' is not specified" if options[:scanId].to_s.empty?
+        response = Appspider::Api::ScanManagement.get_scan_status(rest_api_url,auth_token,options)
+        if response[:IsSuccess].to_s.match /true/i and not response.nil?
+          return response[:Status].to_s
+        else
+          raise StandardError, "Error getting response from #{rest_api_url}"
+        end
+      end
+
       def self.run_scan(options = {})
         rest_api_url = options.delete(:rest_api_url)
         auth_token = options.delete(:auth_token)
@@ -40,18 +52,28 @@ module Appspider
             params = {
                 configId: config[:Id]
             }
-            Appspider::Api::ScanManagement.run_scan(rest_api_url, auth_token, params)
-            return true
+            response = Appspider::Api::ScanManagement.run_scan(rest_api_url, auth_token, params)
+            if response[:IsSuccess].to_s.match /true/i
+              return response
+            else
+              return false
+            end
           end
         end
         false
       end
 
-      def self.get_scan_status_of(options = {})
+      # @params = {
+      #   status: ["Running", "Cancel", etc.. ]
+      # }
+      # @return: Returns the
+      def self.get_all_scans_with_status_of(options = {})
         status = options[:status].to_s.to_sym
         all_scan_status = get_all_scan_status(options)
         all_scan_status[status]
       end
+
+
     end
   end
 end
