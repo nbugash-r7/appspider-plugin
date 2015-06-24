@@ -9,10 +9,14 @@ module Appspider
       #   name: name,
       #   password: password
       # }
-      def self.login(params = {})
-        raise StandardError, "Name parameter was not set" if params[:name].to_s.empty?
-        raise StandardError, "Password parameter was not set" if params[:password].to_s.empty?
-        api_call, params = get_api_call(AUTHENTICATION,params)
+      def self.login(rest_api_url,name,password)
+        raise StandardError, "Name parameter was not set" if name.to_s.empty?
+        raise StandardError, "Password parameter was not set" if password.to_s.empty?
+        api_call = "#{rest_api_url}#{AUTHENTICATION}"
+        params = {
+            name: name,
+            password: password
+        }
         post(api_call,params)
       end
     end

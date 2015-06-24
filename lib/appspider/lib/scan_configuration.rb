@@ -14,16 +14,16 @@ module Appspider
       #   nto_ent_rest_url:nto_ent_rest_url,
       #   auth_token: auth_token
       # }
-      def self.get_configs(params = {})
-        api_call, params = get_api_call(GETCONFIGS,params)
+      def self.get_configs(rest_api_url,auth_token)
+        api_call = "#{rest_api_url}#{GETCONFIGS}"
+        params = { auth_token: auth_token }
         get(api_call, params)
       end
 
-      def self.get_scan_config(params = {})
-        if params[:id].to_s.empty?
-          raise StandardError, "'id' is not specified in the parameters. Set params[:id]"
-        end
-        api_call, params = get_api_call(GETSCANCONFIG,params)
+      def self.get_scan_config(rest_api_url, auth_token, params = {})
+        raise StandardError, "'id' is not specified in the parameters. Set params[:id]" if params[:id].to_s.empty?
+        api_call = "#{rest_api_url}#{GETSCANCONFIG}"
+        params[:auth_token] = auth_token
         get(api_call, params)
       end
     end

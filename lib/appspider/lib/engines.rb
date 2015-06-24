@@ -12,8 +12,9 @@ module Appspider
       #   nto_ent_rest_url: nto_ent_rest_url,
       #   auth_token: auth_token
       # }
-      def self.get_scan_engines(params = {})
-        api_call,params = get_api_call(GETSCANENGINES,params)
+      def self.get_scan_engines(rest_api_url,auth_token)
+        api_call = "#{rest_api_url}#{GETSCANENGINES}"
+        params = {auth_token:auth_token }
         get(api_call,params)
       end
 
@@ -28,7 +29,7 @@ module Appspider
       #  notes: notes,
       #  doNotUpdate: do_not_update
       #}
-      def self.save_engine(params = {})
+      def self.save_engine(rest_api_url, auth_token, params = {})
         raise StandardError, "'id' was not provided" if params[:id].to_s.empty?
         raise StandardError, "'url' was not provided" if params[:url].to_s.empty?
         raise StandardError, "'virtualName' was not provided" if params[:virtualName].to_s.empty?
@@ -36,7 +37,8 @@ module Appspider
         raise StandardError, "'password' was not provided" if params[:password].to_s.empty?
         raise StandardError, "'notes' was not provided" if params[:notes].to_s.empty?
         raise StandardError, "'doNotUpdate' was not provided" if params[:doNotUpdate].to_s.empty?
-        api_call, params = get_api_call(SAVEENGINE,params)
+        api_call = "#{rest_api_url}#{SAVEENGINE}"
+        params[:auth_token] = auth_token
         post(api_call, params)
       end
 
@@ -44,9 +46,10 @@ module Appspider
       #   id: id
       #   auth_token: auth_token
       # }
-      def self.delete_scan_engine(params)
+      def self.delete_scan_engine(rest_api_url, auth_token, params = {})
         raise StandardError, "'id' was not provided" if params[:id].to_s.empty?
-        api_call, params = get_api_call(DELETESCANENGINE,params)
+        api_call = "#{rest_api_url}#{DELETESCANENGINE}"
+        params[:auth_token] = auth_token
         post(api_call, params)
       end
     end

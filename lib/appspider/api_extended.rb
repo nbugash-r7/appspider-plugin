@@ -1,71 +1,57 @@
-require_relative 'api'
+require 'appspider/api'
 module Appspider
-    class ApiExtended
-      attr_accessor :build ,
-                    :launcher,
-                    :listener,
-                    :publisher
-
-      def initialize(build, listener, publisher)
-        # @build = options[:build]
-        # @launcher = options[:launcher]
-        # @listener = options[:listener]
-        @build = build
-        @listener = listener
-        @api_ext = publisher
-      end
-
+  module Api
+    class Extended
       def self.get_all_scans(options = {})
-        appspider_instance = Appspider::Api.new(options)
-        all_configs ||= []
-        appspider_instance.get_configs[:Configs].each do |config|
-          all_configs << config[:Name]
+        configs ||= []
+        rest_api_url = options.delete(:rest_api_url)
+        auth_token = options.delete(:auth_token)
+        all_scans = Appspider::Api::ScanConfiguration.get_configs(rest_api_url,auth_token)
+        all_scans[:Configs].each do |config|
+          configs << config[:Name]
         end
-        all_configs
+        configs
       end
 
       def self.get_all_scan_status(options = {})
-        appspider_instance = Appspider::Api.new(options)
-        all_scans = appspider_instance.get_scans
-        scans = all_scans[:Scans]
-        all_scans_status ||= {}
-        scans.each do |scan|
-          status = (appspider_instance.get_scan_status scan[:Id])[:Status].to_s.to_sym
-          if all_scans_status[status].nil?
-            all_scans_status[status] ||= []
+        rest_api_url = options.delete(:rest_api_url)
+        auth_token = options.delete(:auth_token)
+        all_scans = Appspider::Api::ScanManagement.get_scans(rest_api_url,auth_token)
+        all_scan_status ||= {}
+        all_scans[:Scans].each do |scan|
+          params = { scanId: scan[:Id] }
+          status = (Appspider::Api::ScanManagement.get_scan_status(rest_api_url,auth_token,params))[:Status]
+          if all_scan_status[status.to_s.to_sym].nil?
+            all_scan_status[status.to_s.to_sym] ||= []
           end
-          all_scans_status[status] << scan[:Id]
+          all_scan_status[status.to_s.to_sym] << scan[:Id]
         end
-        all_scans_status
+        all_scan_status
       end
 
-      def self.run_scan_config(options = {})
+      def self.run_scan(options = {})
+        rest_api_url = options.delete(:rest_api_url)
+        auth_token = options.delete(:auth_token)
         raise StandardError, "Config name is not specified" if options[:config_name].to_s.empty?
         config_name = options[:config_name]
-        appspider_instance = Appspider::Api.new(options)
-        appspider_instance.get_configs[:Configs].each do |config|
-          if config[:Name].to_s.match config_name
-            appspider_instance.run_scan config[:Id]
+        configs = Appspider::Api::ScanConfiguration.get_configs(rest_api_url,auth_token)
+        configs[:Configs].each do |config|
+          if config[:Name].to_s.match /#{config_name}/i
+            params = {
+                configId: config[:Id]
+            }
+            Appspider::Api::ScanManagement.run_scan(rest_api_url, auth_token, params)
             return true
           end
         end
         false
       end
 
-      # @returns all the scan ids of the specified status
-      # @usage:
-      # get_scan_status_of({
-      #   url: <url>,
-      #   username: <username>,
-      #   password: <password>.
-      #   status: <status>#
-      # })#
       def self.get_scan_status_of(options = {})
-        raise StandardError, "Need to specify the status" if options[:status].to_s.empty?
         status = options[:status].to_s.to_sym
-        all_scans_status = get_all_scan_status(options)
-        all_scans_status[status]
+        all_scan_status = get_all_scan_status(options)
+        all_scan_status[status]
       end
-
     end
+  end
 end
