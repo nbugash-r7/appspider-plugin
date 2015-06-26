@@ -1,5 +1,6 @@
 require 'rest-client'
 require 'json'
+require 'nokogiri'
 module Appspider
   module Api
     class Base
@@ -28,6 +29,7 @@ module Appspider
 
       def self.get(api_call, params = {})
         raise StandardError, "Invalid authorization token" if params[:auth_token].to_s.empty?
+        type = 'XML' if not params[:type].to_s.empty? and params[:type].to_s.downcase == 'xml'
         auth_token = params.delete(:auth_token) # POP the auth_token
         response = RestClient::Request.execute(
             method:   :get,
@@ -37,7 +39,11 @@ module Appspider
               params: params
             }
           )
-        JSON.parse(response, symbolize_names: true)
+        if type == 'XML'
+          return Nokogiri::XML(response)
+        else
+          return JSON.parse(response, symbolize_names: true)
+        end
       end
 
     end

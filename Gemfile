@@ -5,6 +5,7 @@ gem 'rest-client', "~> 1.6.7"
 gem 'bouncy-castle-java'
 gem 'jpi'
 gem 'rspec'
+gem 'nokogiri', "~> 1.5.5"
 group :development do
   gem 'ruby-debug-ide'
 end

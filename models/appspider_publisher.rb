@@ -12,8 +12,9 @@ class AppspiderPublisher < Jenkins::Tasks::Publisher
   attr_accessor :monitor
   attr_accessor :save_file_to_location
 
-  CHECK_INTERVAL = 60 # Check scan status every 'CHECK_INTERVAL' seconds
+  CHECK_INTERVAL = 120 # Check scan status every 'CHECK_INTERVAL' seconds
   SCAN_IN_PROGRESS_REGEX = /ing/i # Any status with '..ing' ending
+  SCAN_COMPLETED = /completed/i
 
   # Invoked with the form parameters when this extension point
   # is created from a configuration screen.
@@ -51,7 +52,7 @@ class AppspiderPublisher < Jenkins::Tasks::Publisher
     listener.info "Config name: '#{@config_name}'"
     listener.info "Start Scan: '#{@startscan}'"
     listener.info "Monitor Scan: '#{@monitor}'"
-    listener.info "Monitor Scan: '#{@save_file_to_location}'"
+    listener.info "Report Location: '#{@save_file_to_location}'"
 
     if @startscan
       listener.info "Starting AppSpider Scan"
@@ -78,10 +79,22 @@ class AppspiderPublisher < Jenkins::Tasks::Publisher
           scan_status = Appspider::Api::ScanManagement.get_scan_status(@rest_api_url,auth_token,{ scanId:scanId })
           status = scan_status[:Status]
         end
+        listener.info "Scan is finished!!!"
         # Scan is finished
         # (1) Wait until scanid status is complete
-        # (2) Get response of the results
-        # 
+        unless status =~ SCAN_IN_PROGRESS_REGEX
+          # (2) Get response of the results
+          # P.O.C to see that the api works!!
+          scanId = '9a9309e9-3ede-43a9-9edb-7fab5031003c'
+          # End of P.O.C
+          listener.info "Generating results."
+          auth_token = Appspider::Api::Authentication.login(@rest_api_url,@username,@password)
+          xml_report = Appspider::Api::ReportManagement.get_vul_summary_xml(rest_api_url,auth_token,{ scanId:scanId })
+          f = File.open("#{@config_name}_xml_report.xml","w")
+          f.write xml_report
+          f.close
+          listener.info "The file #{@config_name}_xml_report.xml was generated See #{f.path}"
+        end
 
         listener.info "Status for #{@config_name} is '#{status}'"
       else

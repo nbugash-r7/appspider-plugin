@@ -73,7 +73,6 @@ module Appspider
         all_scan_status[status]
       end
 
-
     end
   end
 end
