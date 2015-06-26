@@ -10,11 +10,10 @@ class AppspiderPublisher < Jenkins::Tasks::Publisher
   attr_accessor :config_name
   attr_accessor :startscan
   attr_accessor :monitor
-  attr_accessor :save_file_to_location
 
   CHECK_INTERVAL = 120 # Check scan status every 'CHECK_INTERVAL' seconds
   SCAN_IN_PROGRESS_REGEX = /ing/i # Any status with '..ing' ending
-  SCAN_COMPLETED = /completed/i
+  SCAN_COMPLETED = /ed/i
 
   # Invoked with the form parameters when this extension point
   # is created from a configuration screen.
@@ -25,7 +24,6 @@ class AppspiderPublisher < Jenkins::Tasks::Publisher
     @config_name = attrs['config_name']
     @startscan = attrs['startscan']
     @monitor = attrs['monitor']
-    @save_file_to_location = attrs['save_file_to_location']
   end
 
   ##
@@ -52,7 +50,7 @@ class AppspiderPublisher < Jenkins::Tasks::Publisher
     listener.info "Config name: '#{@config_name}'"
     listener.info "Start Scan: '#{@startscan}'"
     listener.info "Monitor Scan: '#{@monitor}'"
-    listener.info "Report Location: '#{@save_file_to_location}'"
+    listener.info "Workspace: #{build.workspace}"
 
     if @startscan
       listener.info "Starting AppSpider Scan"
@@ -82,29 +80,33 @@ class AppspiderPublisher < Jenkins::Tasks::Publisher
         listener.info "Scan is finished!!!"
         # Scan is finished
         # (1) Wait until scanid status is complete
-        unless status =~ SCAN_IN_PROGRESS_REGEX
-          # (2) Get response of the results
+        if status =~ SCAN_COMPLETED
+
           # P.O.C to see that the api works!!
           scanId = '9a9309e9-3ede-43a9-9edb-7fab5031003c'
           # End of P.O.C
+
           listener.info "Generating results."
+          reports_location = "#{build.workspace}/AppSpiderReports"
+          Dir.mkdir reports_location unless Dir.exist? reports_location
+          listener.info "Reports will be generated on #{reports_location}"
+
           auth_token = Appspider::Api::Authentication.login(@rest_api_url,@username,@password)
           xml_report = Appspider::Api::ReportManagement.get_vul_summary_xml(rest_api_url,auth_token,{ scanId:scanId })
-          f = File.open("#{@config_name}_xml_report.xml","w")
+          f = File.open("#{reports_location}/#{@config_name}_xml_report_#{Time.now.strftime('%m-%d-%Y_%H-%M-%S')}.xml","w")
           f.write xml_report
           f.close
-          listener.info "The file #{@config_name}_xml_report.xml was generated See #{f.path}"
         end
 
         listener.info "Status for #{@config_name} is '#{status}'"
       else
         listener.info "Monitoring is not enabled. For a full detail of the scan go to the Appspider Enterprise link"
       end
-      listener.info "Scanning '#{config_name}' is done!!"
+      listener.info "Scanning using '#{config_name}' is done!!"
     else
       listener.info "AppSpider was not enabled."
     end
-    listener.info "Finished Scanning scan id: #{@config_name}"
+    listener.info "Build process finished"
   end
 
 end

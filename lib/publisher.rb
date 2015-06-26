@@ -1,5 +1,6 @@
 require 'java'
 require 'nokogiri'
+require 'fileutils'
 import 'hudson.model.Result'
 require 'appspider/api'
 require 'appspider/api_extended'

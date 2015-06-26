@@ -23,15 +23,13 @@ f.block do
   end
   f.entry(:title => 'Start scan?',
           :field => 'startscan',
-          :default => true,
           :description => 'Start the AppSpider Scan after Build Completion') do
-    f.checkbox
+    f.checkbox(default: true)
   end
   f.entry(:title => 'Monitor scan?',
           :field => 'monitor',
-          :default => true,
           :description => 'Note: When enabled this will block the entire build process until the scan is completed') do
-    f.checkbox
+    f.checkbox(default: true)
   end
 end
 %>
